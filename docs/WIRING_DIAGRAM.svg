@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1240" viewBox="0 0 1500 1240">
+  <style>
+    text{font-family:Arial,Helvetica,sans-serif;fill:#17212f} .title{font-size:34px;font-weight:700} .sub{font-size:19px;fill:#475569} .head{font-size:23px;font-weight:700} .body{font-size:18px} .small{font-size:15px;fill:#475569} .pin{font-size:18px;font-weight:700} .box{fill:#fff;stroke:#334155;stroke-width:3;rx:18} .wire{fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round} .power{stroke:#dc2626} .ground{stroke:#111827} .sda{stroke:#2563eb} .scl{stroke:#0d9488} .signal{stroke:#9333ea} .node{fill:#9333ea}
+  </style>
+  <rect width="1500" height="1240" fill="#f8fafc"/>
+  <text x="48" y="55" class="title">GaitSense wiring — one foot</text>
+  <text x="48" y="88" class="sub">Build this circuit twice. Flash left firmware to one ESP32-C3 and right firmware to the other.</text>
+
+  <rect x="560" y="142" width="370" height="460" class="box"/>
+  <text x="606" y="187" class="head">ESP32-C3 SuperMini</text>
+  <text x="606" y="224" class="small">Use GPIO labels, not physical pin order</text>
+  <text x="607" y="290" class="pin">3V3</text><text x="607" y="356" class="pin">GND</text>
+  <text x="607" y="422" class="pin">GPIO4 / SDA</text><text x="607" y="488" class="pin">GPIO5 / SCL</text>
+  <text x="607" y="554" class="pin">5V input</text>
+
+  <rect x="1100" y="154" width="330" height="310" class="box"/>
+  <text x="1155" y="196" class="head">ADS1115</text>
+  <text x="1131" y="240" class="pin">VDD</text><text x="1131" y="280" class="pin">GND</text>
+  <text x="1131" y="320" class="pin">SDA</text><text x="1131" y="360" class="pin">SCL</text>
+  <text x="1131" y="400" class="pin">ADDR → GND</text>
+  <text x="1250" y="440" class="small">A0–A3 below</text>
+
+  <rect x="1100" y="500" width="330" height="265" class="box"/>
+  <text x="1155" y="535" class="head">MPU6050 / GY-521</text>
+  <text x="1131" y="568" class="pin">VCC*</text><text x="1131" y="606" class="pin">GND</text>
+  <text x="1131" y="644" class="pin">SDA</text><text x="1131" y="682" class="pin">SCL</text>
+  <text x="1131" y="730" class="pin">AD0 → GND</text>
+
+  <path d="M730 280 H1010 V239 H1100 M1010 239 V558 H1100" class="wire power"/>
+  <path d="M730 345 H980 V279 H1100 M980 279 V596 H1100" class="wire ground"/>
+  <path d="M730 412 H1050 V319 H1100 M1050 412 V634 H1100" class="wire sda"/>
+  <path d="M730 478 H1027 V359 H1100 M1027 478 V672 H1100" class="wire scl"/>
+  <text x="960" y="136" class="small">Shared 3.3 V I²C bus</text>
+
+  <rect x="45" y="152" width="455" height="565" class="box"/>
+  <text x="79" y="195" class="head">Four separate FSR voltage dividers</text>
+  <text x="79" y="227" class="small">Same circuit repeated once for each ADS input</text>
+  <text x="75" y="276" class="body">3V3 ── FSR heel ── ● ── A0 heel</text>
+  <text x="75" y="318" class="body">3V3 ── FSR midfoot ── ● ── A1 midfoot</text>
+  <text x="75" y="360" class="body">3V3 ── FSR medial ── ● ── A2 medial</text>
+  <text x="75" y="402" class="body">3V3 ── FSR lateral ── ● ── A3 lateral</text>
+  <text x="79" y="464" class="body">At EACH ● junction:</text>
+  <path d="M186 502 V540" class="wire signal"/>
+  <circle cx="186" cy="502" r="7" class="node"/>
+  <text x="208" y="509" class="body">junction to its ADS A0/A1/A2/A3</text>
+  <rect x="168" y="540" width="36" height="73" fill="#ede9fe" stroke="#9333ea" stroke-width="3"/>
+  <text x="220" y="582" class="body">10 kΩ resistor</text>
+  <path d="M186 613 V642" class="wire ground"/>
+  <path d="M164 642 H208" class="wire ground"/>
+  <path d="M171 651 H201 M179 659 H193" class="wire ground"/>
+  <text x="79" y="690" class="small">No FSR or resistor junction is shared between channels.</text>
+  <path d="M500 250 H540 V280 H560" class="wire power"/>
+  <text x="518" y="244" class="small">3V3</text>
+  <path d="M500 682 H525 V345 H560" class="wire ground"/>
+
+  <rect x="45" y="775" width="1385" height="390" class="box"/>
+  <text x="78" y="817" class="head">Battery supply — connect after USB bench testing</text>
+  <rect x="82" y="865" width="235" height="122" class="box"/>
+  <text x="120" y="913" class="head">Protected Li-Po</text><text x="142" y="950" class="body">3.7 V nominal</text>
+  <rect x="410" y="865" width="168" height="122" class="box"/>
+  <text x="453" y="932" class="head">Switch</text>
+  <rect x="680" y="865" width="318" height="122" class="box"/>
+  <text x="710" y="911" class="head">TPS61023 boost</text><text x="710" y="950" class="body">fixed 5 V output</text>
+  <rect x="1090" y="865" width="275" height="122" class="box"/>
+  <text x="1119" y="909" class="head">ESP32-C3</text><text x="1119" y="948" class="body">5V pin + GND</text>
+  <path d="M317 888 H410 M578 888 H680 M998 888 H1090" class="wire power"/>
+  <path d="M317 966 V1040 H810 V987 M810 1040 H1210 V987" class="wire ground"/>
+  <text x="320" y="871" class="small">battery +</text><text x="591" y="871" class="small">VIN+</text><text x="1028" y="871" class="small">5V OUT</text>
+  <text x="587" y="1069" class="small">Common ground: battery −, boost GND, ESP32 GND</text>
+  <text x="79" y="1120" class="body">Measure 5 V output before connection. Disconnect battery/boost power whenever USB is connected.</text>
+  <text x="48" y="1215" class="small">* GY-521 clone VCC/regulator and pull-ups vary. Confirm your specific board supports a 3.3 V VCC connection and 3.3 V I²C before power-up.</text>
+</svg>
